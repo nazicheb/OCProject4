@@ -1,43 +1,50 @@
-package com.hemebiotech.analytics;
+package com.hemebiotech.analytics; 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.util.ArrayList; 
+import java.util.List; 
+import java.util.TreeMap; 
 
-public class AnalyticsCounter {
-	private static int headacheCount = 0;	// initialize to 0
-	private static int rashCount = 0;		// initialize to 0
-	private static int pupilCount = 0;		// initialize to 0
-	
-	public static void main(String args[]) throws Exception {
-		// first get input
-		BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
-		String line = reader.readLine();
+  /** AnalyticsCounter represents the first version of analytics project for hemebiotech society 
+   * @author naziha */ 
 
-		int i = 0;	// set i to 0
-		int headCount = 0;	// counts headaches
-		while (line != null) {
-			i++;	// increment i
-			System.out.println("symptom from file: " + line);
-			if (line.equals("headache")) {
-				headCount++;
-				System.out.println("number of headaches: " + headCount);
-			}
-			else if (line.equals("rush")) {
-				rashCount++;
-			}
-			else if (line.contains("pupils")) {
-				pupilCount++;
-			}
+public class AnalyticsCounter { 
 
-			line = reader.readLine();	// get another symptom
-		}
-		
-		// next generate output
-		FileWriter writer = new FileWriter ("result.out");
-		writer.write("headache: " + headacheCount + "\n");
-		writer.write("rash: " + rashCount + "\n");
-		writer.write("dialated pupils: " + pupilCount + "\n");
-		writer.close();
-	}
-}
+  /** filepath refers to the file Symptoms.txt */ 
+
+  private static String filepath="Symptoms.txt"; 
+
+/** This method reads the Symtoms file,counts the number of duplications for each symptom and generates results 
+ * file that groups symptoms and their numbers of duplications in alphabetic order */ 
+
+  public static void main(String args[]) throws Exception { 
+
+  /** @param symplist is the list of symtoms obtained from Symtoms file 
+  * @param symptreemap is the TreeMap with key equals symtom (type string) and values equals the number of 
+  * duplications (type integer) */ 
+
+   List<String> symplist = new ArrayList<String>(); 
+   TreeMap<String,Integer> symptreemap=new TreeMap<String,Integer>(); 
+   
+   /** this reads the filepath then creates symplist by GetSymptoms method  
+    * @see ReadSymptomDataFromFile */ 
+
+    ReadSymptomDataFromFile sympread = new ReadSymptomDataFromFile(filepath); 
+    symplist= sympread.GetSymptoms(); 
+     
+    /** this creates symptreemap where keys are symptoms obtained from symplist 
+     * and values are numbers of duplications counted due to countAndTreeSymptoms method 
+     * @see CountSymtomListAndOrder */ 
+
+     CountSymtomListAndOrder sympcountorder=new CountSymtomListAndOrder(symplist); 
+     symptreemap=sympcountorder.countAndTreeSymptoms(); 
+
+    /** this created the results output file where symptreemap elements are writted 
+    * @see WriteSymptomDataWithCount */ 
+
+    WriteSymptomDataWithCount sympwrite=new WriteSymptomDataWithCount(symptreemap); 
+    sympwrite.postSymptoms(); 
+
+  } 
+} 
+
+ 
