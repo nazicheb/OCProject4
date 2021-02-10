@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Simple brute force implementation
- *
- */
+ /** this class reads the Symtoms file input and generates a list of symtoms */ 
+ 
+
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
 	private String filepath;
